@@ -1,0 +1,10 @@
+.Game {
+  border: 1px solid #000;
+  font-weight: 600;
+  color: #000;
+}
+
+.column {
+  width: 50px;
+  display: inline-block;
+}

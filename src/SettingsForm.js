@@ -13,7 +13,7 @@ const SettingsForm = ({ colsnum, rowsnum, difficulty, onChange, onSubmit }) => {
           <option value="3">hard</option>
         </select>
       </label>
-      <button>Start game</button>
+      <button className="btn btn-success">Start game</button>
     </form>
   );
 }
