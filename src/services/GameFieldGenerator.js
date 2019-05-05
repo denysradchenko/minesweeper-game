@@ -5,35 +5,61 @@ export default class GameFieldGenerator {
   }
 
   generateField(cols, rows, difficulty) {
-    const field = new Array(cols)
-    for (let i = 0; i < field.length; i++) {
-      field[i] = new Array(rows).fill(0);
-    }
+    const field = [];
 
-    const diff = difficulty === 1 ? 0.10 : (difficulty === 2 ? 0.14 : 0.19);
+    for (let i = 0; i < cols; i++) {
+      field[i] = [];
+      for (let j = 0; j < rows; j++) {
+        field[i][j] = { value: 0, open: false };
+      }
+    }
+    const diff = difficulty === 1 ? 0.14 : (difficulty === 2 ? 0.19 : 0.24);
 
     const bombNumber = Math.floor(cols * rows * diff);
 
     for (let i = 0; i < bombNumber; i++) {
       const c = this.getRand(cols);
       const r = this.getRand(rows);
-      if (field[c][r] === 0) {
-        field[c][r] = 'b';
-        // debugger;
-        if (typeof field[c - 1] !== 'undefined' && typeof field[c - 1][r - 1] != 'undefined') field[c - 1][r - 1] += 1;
-        if (typeof field[c] !== 'undefined' && typeof field[c][r - 1] !== 'undefined') field[c][r - 1] += 1;
-        if (typeof field[c + 1] !== 'undefined' && typeof field[c + 1][r - 1] !== 'undefined') field[c + 1][r - 1] += 1;
-        if (typeof field[c - 1] !== 'undefined' && typeof field[c - 1][r] !== 'undefined') field[c - 1][r] += 1;
-        if (typeof field[c + 1] !== 'undefined' && typeof field[c + 1][r] !== 'undefined') field[c + 1][r] += 1;
-        if (typeof field[c - 1] !== 'undefined' && typeof field[c - 1][r + 1] !== 'undefined') field[c - 1][r + 1] += 1;
-        if (typeof field[c] !== 'undefined' && typeof field[c][r + 1] !== 'undefined') field[c][r + 1] += 1;
-        if (typeof field[c + 1] !== 'undefined' && typeof field[c + 1][r + 1] !== 'undefined') field[c + 1][r + 1] += 1;
-      } else {
-        i--
+
+      if (field[c][r].value !== 'b') {
+        field[c][r].value = 'b';
+        const leftCol = c > 0;
+        const rightCol = c < cols - 1;
+        const topRow = r > 0;
+        const bottomRow = r < rows - 1;
+
+        if (leftCol) {
+          if (topRow && !isNaN(field[c - 1][r - 1].value)) {
+            field[c - 1][r - 1].value += 1;
+          }
+          if (!isNaN(field[c - 1][r].value)) {
+            field[c - 1][r].value += 1;
+          }
+          if (bottomRow && !isNaN(field[c - 1][r + 1].value)) {
+            field[c - 1][r + 1].value += 1;
+          }
+        }
+
+        if (topRow && !isNaN(field[c][r - 1].value)) {
+          field[c][r - 1].value += 1;
+        }
+        if (bottomRow && !isNaN(field[c][r + 1].value)) {
+          field[c][r + 1].value += 1;
+        }
+
+        if (rightCol) {
+          if (topRow && !isNaN(field[c + 1][r - 1].value)) {
+            field[c + 1][r - 1].value += 1;
+          }
+          if (!isNaN(field[c + 1][r].value)) {
+            field[c + 1][r].value += 1;
+          }
+          if (bottomRow && !isNaN(field[c + 1][r + 1].value)) {
+            field[c + 1][r + 1].value += 1;
+          }
+        }
       }
     }
-
-
 
     return field;
   }

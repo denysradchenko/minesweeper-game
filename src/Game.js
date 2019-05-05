@@ -8,10 +8,10 @@ const Game = (props) => {
 
     for (let i = 0; i < el.length; i++) {
       const key = `${index}${i}`
-      result.push(< Cell content={el[i]} key={key} />);
+      result.push(< Cell cell={el[i]} key={key} onContextMenu={props.onContextMenu} onClick={props.onClick} col={index} row={i} rowsnum={props.rowsnum} />);
     }
 
-    return <div className="column">{result}</div>;
+    return <div key={index}>{result}</div>;
   })
   return (
     <div className="Game">

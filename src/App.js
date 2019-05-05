@@ -34,11 +34,26 @@ class App extends Component {
     })
   }
 
+  handleRightClick = (e) => {
+    e.preventDefault();
+    const col = e.target.getAttribute('data-col');
+    const row = e.target.getAttribute('data-row');
+    console.log(`The cell in ${col} column and ${row} row was right clicked`);
+  }
+
+  handleLeftClick = (e) => {
+    const col = e.currentTarget.getAttribute('data-col');
+    const row = e.currentTarget.getAttribute('data-row');
+    const { field } = this.state;
+    field[col][row].open = true;
+    this.setState({ field })
+  }
+
   newGame = () => {
-    console.log('New Game!');
     this.setState({
       startGame: false,
-      gameOver: false
+      gameOver: false,
+      field: null,
     })
   }
 
@@ -47,7 +62,12 @@ class App extends Component {
     return (
       <div className="App">
         {startGame ?
-          <Game field={field} /> :
+          <Game
+            field={field}
+            rowsnum={rowsnum}
+            onContextMenu={this.handleRightClick}
+            onClick={this.handleLeftClick}
+          /> :
           <SettingsForm
             colsnum={colsnum}
             rowsnum={rowsnum}
