@@ -4,13 +4,19 @@ export default class GameFieldGenerator {
     return Math.floor(Math.random() * range);
   }
 
+  countCellsToOpen(array) {
+    return array.reduce((acc, el) => {
+      return acc + el.filter(cell => cell.value !== 'b').length;
+    }, 0)
+  }
+
   generateField(cols, rows, difficulty) {
     const field = [];
 
     for (let i = 0; i < cols; i++) {
       field[i] = [];
       for (let j = 0; j < rows; j++) {
-        field[i][j] = { value: 0, open: false };
+        field[i][j] = { value: 0, open: false, marked: false };
       }
     }
     const diff = difficulty === 1 ? 0.14 : (difficulty === 2 ? 0.19 : 0.24);
@@ -61,7 +67,7 @@ export default class GameFieldGenerator {
       }
     }
 
-    return field;
+    return { field: field, startGame: true, allCells: this.countCellsToOpen(field) };
   }
 
 }

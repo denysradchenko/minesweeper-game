@@ -1,0 +1,24 @@
+.Winner {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(150, 150, 150, 0.7);
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 900;
+  display: table;
+}
+
+.Winner p {
+  display: table-cell;
+  vertical-align: middle;
+  color: #f8f9fa;
+}
+
+.Winner button {
+  display: block;
+  margin: 0 auto;
+  margin-top: 1rem;
+}

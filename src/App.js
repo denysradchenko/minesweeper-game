@@ -5,6 +5,7 @@ import SettingsForm from './SettingsForm';
 import Game from './Game';
 import GameFieldGenerator from './services/GameFieldGenerator';
 import GameOver from './GameOver';
+import Winner from './Winner';
 
 class App extends Component {
   state = {
@@ -13,7 +14,9 @@ class App extends Component {
     difficulty: 1,
     field: null,
     startGame: false,
-    gameOver: false
+    gameOver: false,
+    allCells: null,
+    openedCells: 0
   }
 
   GameFieldGenerator = new GameFieldGenerator();
@@ -27,26 +30,35 @@ class App extends Component {
   handleForm = (e) => {
     e.preventDefault();
     const { colsnum, rowsnum, difficulty } = this.state;
-    const field = this.GameFieldGenerator.generateField(colsnum, rowsnum, difficulty);
-    this.setState({
-      startGame: true,
-      field
-    })
+    const game = this.GameFieldGenerator.generateField(colsnum, rowsnum, difficulty);
+    this.setState(game)
   }
 
   handleRightClick = (e) => {
     e.preventDefault();
-    const col = e.target.getAttribute('data-col');
-    const row = e.target.getAttribute('data-row');
-    console.log(`The cell in ${col} column and ${row} row was right clicked`);
+    const col = e.currentTarget.getAttribute('data-col');
+    const row = e.currentTarget.getAttribute('data-row');
+    const { field } = this.state;
+    field[col][row].marked = !field[col][row].marked;
+    this.setState({ field });
   }
 
   handleLeftClick = (e) => {
     const col = e.currentTarget.getAttribute('data-col');
     const row = e.currentTarget.getAttribute('data-row');
     const { field } = this.state;
+
+    if (field[col][row].open) return;
+
     field[col][row].open = true;
-    this.setState({ field })
+    this.setState({ field });
+    if (field[col][row].value === 'b') {
+      this.setState({ gameOver: true })
+    }
+
+    this.setState(prevState => ({
+      openedCells: prevState.openedCells + 1
+    }));
   }
 
   newGame = () => {
@@ -54,11 +66,13 @@ class App extends Component {
       startGame: false,
       gameOver: false,
       field: null,
+      allCells: null,
+      openedCells: 0
     })
   }
 
   render() {
-    const { colsnum, rowsnum, difficulty, startGame, field, gameOver } = this.state;
+    const { colsnum, rowsnum, difficulty, startGame, field, gameOver, allCells, openedCells } = this.state;
     return (
       <div className="App">
         {startGame ?
@@ -77,6 +91,7 @@ class App extends Component {
           />
         }
         {gameOver ? <GameOver newGame={this.newGame} /> : null}
+        {startGame && allCells === openedCells ? <Winner newGame={this.newGame} /> : null}
       </div>
     );
   }
