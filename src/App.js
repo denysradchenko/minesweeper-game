@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'font-awesome/css/font-awesome.min.css';
 import SettingsForm from './SettingsForm';
 import Game from './Game';
 import GameFieldGenerator from './services/GameFieldGenerator';

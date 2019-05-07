@@ -1,7 +1,7 @@
 .blocked-cell {
   display: block;
   text-align: center;
-  background-color: #aaa;
+  background-color: rgb(202, 202, 202);
   border: 1px solid #000;
   box-sizing: border-box;
   position: relative;
@@ -10,7 +10,7 @@
 .marked-cell {
   display: block;
   text-align: center;
-  background-color: #ff0;
+  background-color: #EBDE48;
   border: 1px solid #000;
   box-sizing: border-box;
   position: relative;
@@ -27,15 +27,15 @@
 }
 
 .green-cell {
-  background-color: green;
+  background-color: #2EE88B;
 }
 
 .red-cell {
-  background-color: red;
+  background-color: #FF5449;
 }
 
 .blue-cell {
-  background-color: blue;
+  background-color: #718EEB;
 }
 
 span.cell-value {
@@ -43,4 +43,27 @@ span.cell-value {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.detonated {
+  color: #ffffff;
+  animation: detonatedbomb 1s infinite linear alternate;
+}
+
+.grey {
+  color: rgb(41, 41, 41);
+}
+
+.red {
+  color: #FF5449;
+}
+
+@keyframes detonatedbomb {
+  0% {
+    color: #ffffff;
+  }
+
+  100% {
+    color: #000000;
+  }
 }
