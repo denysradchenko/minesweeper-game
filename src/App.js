@@ -46,7 +46,7 @@ class App extends Component {
   handleLeftClick = (e) => {
     const col = e.currentTarget.getAttribute('data-col');
     const row = e.currentTarget.getAttribute('data-row');
-    const { field } = this.state;
+    const { field, allCells } = this.state;
 
     if (field[col][row].open) return;
 
@@ -64,7 +64,9 @@ class App extends Component {
       })
     }
 
-    this.setState({ openedCells: this.countOpenedCells(field) });
+    const openedCells = this.countOpenedCells(field);
+    if (allCells === openedCells) this.openAllCells();
+    this.setState({ openedCells });
 
   }
 
@@ -156,9 +158,9 @@ class App extends Component {
     return field;
   }
 
-  openAllCells = (col, row) => {
+  openAllCells = (col = null, row = null) => {
     const { field, colsnum, rowsnum } = this.state;
-    field[col][row].detonated = true;
+    if (col !== null && row !== null) field[col][row].detonated = true;
     for (let i = 0; i < colsnum; i++) {
       for (let j = 0; j < rowsnum; j++) {
         field[i][j].open = true;
