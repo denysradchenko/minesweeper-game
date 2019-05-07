@@ -8,10 +8,16 @@ const Cell = ({ cell, onContextMenu, onClick, col, row, rowsnum }) => {
   if (!cell.open) cellClass = 'blocked-cell';
   if (cell.marked) cellClass = 'marked-cell';
 
-  const cellValue = cell.open ? (cell.value === 0 ? null : cell.value) : null
+  const cellSizes = {
+    width: `calc(75vh/${rowsnum})`,
+    height: `calc(75vh/${rowsnum})`,
+    fontSize: `calc(15rem/${rowsnum})`
+  }
+
+  const cellValue = cell.open ? (cell.value === 0 ? null : (cell.detonated ? '!' : cell.value)) : null
 
   return (
-    <div className={cellClass} onContextMenu={onContextMenu} onClick={onClick} data-col={col} data-row={row}>
+    <div className={cellClass} onContextMenu={onContextMenu} onClick={onClick} data-col={col} data-row={row} style={cellSizes}>
       <span className="cell-value">{cellValue}</span>
     </div>
   );

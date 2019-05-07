@@ -53,12 +53,118 @@ class App extends Component {
     field[col][row].open = true;
     this.setState({ field });
     if (field[col][row].value === 'b') {
-      this.setState({ gameOver: true })
+      this.openAllCells(col, row);
+      this.setState({ gameOver: true });
+      return;
     }
 
-    this.setState(prevState => ({
-      openedCells: prevState.openedCells + 1
-    }));
+    if (field[col][row].value === 0) {
+      this.setState({
+        field: this.openAllGreenCells(parseInt(col), parseInt(row), field)
+      })
+    }
+
+    this.setState({ openedCells: this.countOpenedCells(field) });
+
+  }
+
+  countOpenedCells = (field) => {
+    return field.reduce((acc, el) => {
+      return acc + el.filter(cell => cell.open).length;
+    }, 0)
+  }
+
+  openAllGreenCells = (c, r, f) => {
+    const { colsnum, rowsnum } = this.state;
+    let field = f;
+
+    const leftCol = c > 0;
+    const rightCol = c < colsnum - 1;
+    const topRow = r > 0;
+    const bottomRow = r < rowsnum - 1;
+    if (leftCol) {
+      if (topRow) {
+        if (field[c - 1][r - 1].value === 0 && !field[c - 1][r - 1].open) {
+          field[c - 1][r - 1].open = true;
+          field = this.openAllGreenCells(c - 1, r - 1, field);
+        } else {
+          field[c - 1][r - 1].open = true;
+        }
+      }
+
+      if (field[c - 1][r].value === 0 && !field[c - 1][r].open) {
+        field[c - 1][r].open = true;
+        field = this.openAllGreenCells(c - 1, r, field);
+      } else {
+        field[c - 1][r].open = true;
+      }
+
+      if (bottomRow) {
+        if (field[c - 1][r + 1].value === 0 && !field[c - 1][r + 1].open) {
+          field[c - 1][r + 1].open = true;
+          field = this.openAllGreenCells(c - 1, r + 1, field);
+        } else {
+          field[c - 1][r + 1].open = true;
+        }
+      }
+    }
+
+    if (topRow) {
+      if (field[c][r - 1].value === 0 && !field[c][r - 1].open) {
+        field[c][r - 1].open = true;
+        field = this.openAllGreenCells(c, r - 1, field);
+      } else {
+        field[c][r - 1].open = true;
+      }
+    }
+    if (bottomRow) {
+      if (field[c][r + 1].value === 0 && !field[c][r + 1].open) {
+        field[c][r + 1].open = true;
+        field = this.openAllGreenCells(c, r + 1, field);
+      } else {
+        field[c][r + 1].open = true;
+      }
+    }
+
+    if (rightCol) {
+      if (topRow) {
+        if (field[c + 1][r - 1].value === 0 && !field[c + 1][r - 1].open) {
+          field[c + 1][r - 1].open = true;
+          field = this.openAllGreenCells(c + 1, r - 1, field);
+        } else {
+          field[c + 1][r - 1].open = true;
+        }
+      }
+
+      if (field[c + 1][r].value === 0 && !field[c + 1][r].open) {
+        field[c + 1][r].open = true;
+        field = this.openAllGreenCells(c + 1, r, field);
+      } else {
+        field[c + 1][r].open = true;
+      }
+
+      if (bottomRow) {
+        if (field[c + 1][r + 1].value === 0 && !field[c + 1][r + 1].open) {
+          field[c + 1][r + 1].open = true;
+          field = this.openAllGreenCells(c + 1, r + 1, field);
+        } else {
+          field[c + 1][r + 1].open = true;
+        }
+      }
+    }
+
+    return field;
+  }
+
+  openAllCells = (col, row) => {
+    const { field, colsnum, rowsnum } = this.state;
+    field[col][row].detonated = true;
+    for (let i = 0; i < colsnum; i++) {
+      for (let j = 0; j < rowsnum; j++) {
+        field[i][j].open = true;
+      }
+    }
+    this.setState({ field })
   }
 
   newGame = () => {
