@@ -22,12 +22,14 @@ class App extends Component {
 
   GameFieldGenerator = new GameFieldGenerator();
 
+  // Game settings
   handleInput = ({ target }) => {
     this.setState({
       [target.name]: parseInt(target.value)
     });
   }
 
+  // New game launching
   handleForm = (e) => {
     e.preventDefault();
     const { colsnum, rowsnum, difficulty } = this.state;
@@ -35,51 +37,62 @@ class App extends Component {
     this.setState(game)
   }
 
+  // Right mouse button click (flag/unflag cell)
   handleRightClick = (e) => {
     e.preventDefault();
     const col = e.currentTarget.getAttribute('data-col');
     const row = e.currentTarget.getAttribute('data-row');
     const { field } = this.state;
+    if (field[col][row].open) return; // if cell is already opened
     field[col][row].marked = !field[col][row].marked;
     this.setState({ field });
   }
 
+  // Left mouse button click (opening of cell)
   handleLeftClick = (e) => {
     const col = e.currentTarget.getAttribute('data-col');
     const row = e.currentTarget.getAttribute('data-row');
     const { field, allCells } = this.state;
 
-    if (field[col][row].open) return;
+    if (field[col][row].open || field[col][row].marked) return; // if cell is already opened or flagged
 
-    field[col][row].open = true;
-    this.setState({ field });
+    if (field[col][row].value === 0) {
+      this.setState({
+        field: this.openAllCellsBeside(parseInt(col), parseInt(row), field)
+      })
+    }
+
     if (field[col][row].value === 'b') {
       this.openAllCells(col, row);
       this.setState({ gameOver: true });
       return;
     }
 
-    if (field[col][row].value === 0) {
-      this.setState({
-        field: this.openAllGreenCells(parseInt(col), parseInt(row), field)
-      })
-    }
-
+    field[col][row].open = true;
     const openedCells = this.countOpenedCells(field);
     if (allCells === openedCells) this.openAllCells();
-    this.setState({ openedCells });
 
+    this.setState({ openedCells, field });
   }
 
+  // Counting the number of already open cells
   countOpenedCells = (field) => {
     return field.reduce((acc, el) => {
       return acc + el.filter(cell => cell.open).length;
     }, 0)
   }
 
-  openAllGreenCells = (c, r, f) => {
+  // Opening of all cells beside the empty cell
+  openAllCellsBeside = (c, r, f) => {
     const { colsnum, rowsnum } = this.state;
     let field = f;
+    field[c][r].open = true;
+
+    const openUnmarkCell = (x, y) => {
+      field[x][y].open = true;
+      field[x][y].marked = false;
+      return;
+    }
 
     const leftCol = c > 0;
     const rightCol = c < colsnum - 1;
@@ -88,70 +101,62 @@ class App extends Component {
     if (leftCol) {
       if (topRow) {
         if (field[c - 1][r - 1].value === 0 && !field[c - 1][r - 1].open) {
-          field[c - 1][r - 1].open = true;
-          field = this.openAllGreenCells(c - 1, r - 1, field);
+          field = this.openAllCellsBeside(c - 1, r - 1, field);
         } else {
-          field[c - 1][r - 1].open = true;
+          openUnmarkCell(c - 1, r - 1);
         }
       }
 
       if (field[c - 1][r].value === 0 && !field[c - 1][r].open) {
-        field[c - 1][r].open = true;
-        field = this.openAllGreenCells(c - 1, r, field);
+        field = this.openAllCellsBeside(c - 1, r, field);
       } else {
-        field[c - 1][r].open = true;
+        openUnmarkCell(c - 1, r);
       }
 
       if (bottomRow) {
         if (field[c - 1][r + 1].value === 0 && !field[c - 1][r + 1].open) {
-          field[c - 1][r + 1].open = true;
-          field = this.openAllGreenCells(c - 1, r + 1, field);
+          field = this.openAllCellsBeside(c - 1, r + 1, field);
         } else {
-          field[c - 1][r + 1].open = true;
+          openUnmarkCell(c - 1, r + 1);
         }
       }
     }
 
     if (topRow) {
       if (field[c][r - 1].value === 0 && !field[c][r - 1].open) {
-        field[c][r - 1].open = true;
-        field = this.openAllGreenCells(c, r - 1, field);
+        field = this.openAllCellsBeside(c, r - 1, field);
       } else {
-        field[c][r - 1].open = true;
+        openUnmarkCell(c, r - 1);
       }
     }
     if (bottomRow) {
       if (field[c][r + 1].value === 0 && !field[c][r + 1].open) {
-        field[c][r + 1].open = true;
-        field = this.openAllGreenCells(c, r + 1, field);
+        field = this.openAllCellsBeside(c, r + 1, field);
       } else {
-        field[c][r + 1].open = true;
+        openUnmarkCell(c, r + 1);
       }
     }
 
     if (rightCol) {
       if (topRow) {
         if (field[c + 1][r - 1].value === 0 && !field[c + 1][r - 1].open) {
-          field[c + 1][r - 1].open = true;
-          field = this.openAllGreenCells(c + 1, r - 1, field);
+          field = this.openAllCellsBeside(c + 1, r - 1, field);
         } else {
-          field[c + 1][r - 1].open = true;
+          openUnmarkCell(c + 1, r - 1);
         }
       }
 
       if (field[c + 1][r].value === 0 && !field[c + 1][r].open) {
-        field[c + 1][r].open = true;
-        field = this.openAllGreenCells(c + 1, r, field);
+        field = this.openAllCellsBeside(c + 1, r, field);
       } else {
-        field[c + 1][r].open = true;
+        openUnmarkCell(c + 1, r);
       }
 
       if (bottomRow) {
         if (field[c + 1][r + 1].value === 0 && !field[c + 1][r + 1].open) {
-          field[c + 1][r + 1].open = true;
-          field = this.openAllGreenCells(c + 1, r + 1, field);
+          field = this.openAllCellsBeside(c + 1, r + 1, field);
         } else {
-          field[c + 1][r + 1].open = true;
+          openUnmarkCell(c + 1, r + 1);
         }
       }
     }
@@ -159,12 +164,16 @@ class App extends Component {
     return field;
   }
 
+  // Opening of all the cells in the game field
   openAllCells = (col = null, row = null) => {
     const { field, colsnum, rowsnum } = this.state;
     if (col !== null && row !== null) field[col][row].detonated = true;
     for (let i = 0; i < colsnum; i++) {
       for (let j = 0; j < rowsnum; j++) {
         field[i][j].open = true;
+        if (col === null && row === null && field[i][j].value === 'b') {
+          field[i][j].marked = true;
+        }
       }
     }
     this.setState({ field })
