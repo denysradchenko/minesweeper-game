@@ -17,7 +17,8 @@ class App extends Component {
     startGame: false,
     gameOver: false,
     allCells: null,
-    openedCells: 0
+    openedCells: 0,
+    sensorFlag: false
   }
 
   GameFieldGenerator = new GameFieldGenerator();
@@ -27,6 +28,12 @@ class App extends Component {
     this.setState({
       [target.name]: parseInt(target.value)
     });
+  }
+
+  handleSensorFlag = () => {
+    this.setState(prevState => ({
+      sensorFlag: !prevState.sensorFlag
+    }))
   }
 
   updateFieldSettigns = (number) => {
@@ -69,7 +76,12 @@ class App extends Component {
   handleLeftClick = (e) => {
     const col = e.currentTarget.getAttribute('data-col');
     const row = e.currentTarget.getAttribute('data-row');
-    const { field, allCells } = this.state;
+    const { field, allCells, sensorFlag } = this.state;
+
+    if (sensorFlag) {
+      this.handleRightClick(e)
+      return;
+    }
 
     if (field[col][row].open || field[col][row].marked) return; // if cell is already opened or flagged
 
@@ -202,20 +214,23 @@ class App extends Component {
       gameOver: false,
       field: null,
       allCells: null,
-      openedCells: 0
+      openedCells: 0,
+      sensorFlag: false
     })
   }
 
   render() {
-    const { colsnum, rowsnum, difficulty, startGame, field, gameOver, allCells, openedCells } = this.state;
+    const { colsnum, rowsnum, difficulty, startGame, field, gameOver, allCells, openedCells, sensorFlag } = this.state;
     return (
       <div className="App">
         {startGame ?
           <Game
             field={field}
             rowsnum={rowsnum}
+            sensorFlag={sensorFlag}
             onContextMenu={this.handleRightClick}
             onClick={this.handleLeftClick}
+            handleSensorFlag={this.handleSensorFlag}
           /> :
           <SettingsForm
             colsnum={colsnum}

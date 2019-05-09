@@ -20,3 +20,22 @@ div.column>div {
   box-sizing: border-box;
   border: 1px solid #777;
 }
+
+.sensor-flag {
+  display: none;
+  position: absolute;
+  padding: 10px;
+}
+
+.sensor-flag-on {
+  color: red;
+  background-color: #EBDE48;
+}
+
+@media (pointer: coarse) {
+  .sensor-flag {
+    display: block;
+    top: 20px;
+    right: 20px;
+  }
+}

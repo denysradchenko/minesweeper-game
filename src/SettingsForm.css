@@ -36,32 +36,6 @@
   padding: 0 15px;
 }
 
-.input-form i.fa-chevron-left {}
-
-/* .input-form label span {
-  float: left;
-  width: 50%;
-}
-
-.input-form label input {
-  float: right;
-  text-align: center;
-  width: 50%;
-}
-
-.input-form label select {
-  float: right;
-  text-align: center;
-  width: 50%;
-  text-align-last: center;
-}
-
-.input-form label::after {
-  content: '';
-  display: block;
-  clear: both;
-} */
-
 .input-form button {
   width: 50%;
   display: block;

@@ -20,10 +20,17 @@ const Game = (props) => {
     fontSize: cellFontSize,
   }
 
+  const sensorFlagClasses = props.sensorFlag ? 'sensor-flag sensor-flag-on' : 'sensor-flag';
+
   return (
-    <div className="Game" style={gameStyle}>
-      {cells}
-    </div>
+    <>
+      <div className={sensorFlagClasses} onClick={props.handleSensorFlag}>
+        <i className='fa fa-flag'></i>
+      </div>
+      <div className="Game" style={gameStyle}>
+        {cells}
+      </div>
+    </>
   );
 }
 
