@@ -2,11 +2,43 @@
   display: block;
 }
 
-.input-form label {
-  display: block;
+.input-form h1 {
+  text-transform: uppercase;
+  text-align: center;
+  padding: 1.25rem 0;
 }
 
-.input-form label span {
+.input-form label {
+  display: block;
+  width: 100%;
+  padding: 10px 0;
+  user-select: none;
+}
+
+.input-form label>div {
+  font-size: 1.25rem;
+}
+
+.input-form label>div:nth-child(1) {
+  text-align: center;
+}
+
+.input-form label>div:nth-child(2) {
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.input-form i {
+  font-size: 1rem;
+  color: grey;
+  padding: 0 15px;
+}
+
+.input-form i.fa-chevron-left {}
+
+/* .input-form label span {
   float: left;
   width: 50%;
 }
@@ -28,7 +60,7 @@
   content: '';
   display: block;
   clear: both;
-}
+} */
 
 .input-form button {
   width: 50%;

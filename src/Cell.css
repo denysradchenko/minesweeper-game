@@ -1,29 +1,9 @@
 .blocked-cell {
-  display: block;
-  text-align: center;
   background-color: rgb(202, 202, 202);
-  border: 1px solid #000;
-  box-sizing: border-box;
-  position: relative;
 }
 
 .marked-cell {
-  display: block;
-  text-align: center;
   background-color: #EBDE48;
-  border: 1px solid #000;
-  box-sizing: border-box;
-  position: relative;
-}
-
-.green-cell,
-.red-cell,
-.blue-cell {
-  display: block;
-  text-align: center;
-  border: 1px solid #000;
-  box-sizing: border-box;
-  position: relative;
 }
 
 .green-cell {
@@ -43,6 +23,7 @@ span.cell-value {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  font-size: 1em;
   user-select: none;
 }
 
@@ -66,5 +47,23 @@ span.cell-value {
 
   100% {
     color: #000000;
+  }
+}
+
+@media (max-width: 600px) {
+  span.cell-value {
+    font-size: 0.8em;
+  }
+}
+
+@media (max-width: 500px) {
+  span.cell-value {
+    font-size: 0.7em;
+  }
+}
+
+@media (max-width: 350px) {
+  span.cell-value {
+    font-size: 0.65em;
   }
 }

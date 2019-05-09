@@ -29,6 +29,23 @@ class App extends Component {
     });
   }
 
+  updateFieldSettigns = (number) => {
+    const newSize = this.state.rowsnum + number;
+    if (newSize > 20 || newSize < 10) return;
+    this.setState({
+      rowsnum: newSize,
+      colsnum: newSize
+    })
+  }
+
+  updateLevelSettings = (number) => {
+    const newLevel = this.state.difficulty + number;
+    if (newLevel > 3 || newLevel < 1) return;
+    this.setState({
+      difficulty: newLevel
+    })
+  }
+
   // New game launching
   handleForm = (e) => {
     e.preventDefault();
@@ -202,10 +219,11 @@ class App extends Component {
           /> :
           <SettingsForm
             colsnum={colsnum}
-            rowsnum={rowsnum}
             difficulty={difficulty}
             onChange={this.handleInput}
             onSubmit={this.handleForm}
+            updateFieldSettigns={this.updateFieldSettigns}
+            updateLevelSettings={this.updateLevelSettings}
           />
         }
         {gameOver ? <GameOver newGame={this.newGame} /> : null}
