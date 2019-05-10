@@ -11,7 +11,7 @@ const SettingsForm = ({ colsnum, difficulty, onSubmit, updateFieldSettigns, upda
       <h1>Minesweeper</h1>
 
       <label>
-        <div>Field size</div>
+        <div>Game board size</div>
         <div>
           <i className="fa fa-chevron-left" onClick={() => updateFieldSettigns(-5)}></i>
           {fieldSizeValue}
