@@ -13,3 +13,5 @@ The game is won when all mine-free squares are revealed
 
 Left mouse click - open field.
 Right mouse click - flag/unflag field.
+
+[Link to the deployed application on GitHub Pages](https://denysradchenko.github.io/minesweeper-game/)
